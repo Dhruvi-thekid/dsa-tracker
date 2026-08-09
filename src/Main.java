@@ -49,6 +49,10 @@ public class Main {
             System.out.println("5. Delete Problem");
             System.out.println("6. Exit");
 
+            System.out.println();
+            System.out.println();
+
+
             System.out.println("Enter your choice:");
             choice = sc.nextInt();
 
@@ -66,14 +70,61 @@ public class Main {
                     System.out.println("Enter The Platform:");
                     String platform = sc.nextLine();
 
-                    System.out.println("Enter Difficulty Level:");
-                    String difficulty = sc.nextLine();
+                    System.out.println("Choose A  Difficulty Level of the Problem:");
+                    System.out.println("1. Easy");
+                    System.out.println("2. Medium");
+                    System.out.println("3. Hard");
+
+                    int difficultyChoice = sc.nextInt();
+                    sc.nextLine();
+
+                    Difficulty difficulty;
+                    switch(difficultyChoice){
+                        case 1:
+                            difficulty = Difficulty.EASY;
+                            break;
+                        case 2:
+                            difficulty = Difficulty.MEDIUM;
+                            break;
+                        case 3:
+                            difficulty = Difficulty.HARD;
+                        default:
+                            difficulty = Difficulty.EASY;
+                            System.out.println("Invalid choice. Defaulting to RASY");
+                    }
+                    System.out.println("Difficulty Selected");
 
                     System.out.println("Enter Topic Name:");
                     String topic = sc.nextLine();
 
-                    System.out.println("Enter Status of the Problem:");
-                    String status = sc.nextLine();
+                    System.out.println("Choose A Status for the Problem:");
+                    System.out.println("1. Not Started");
+                    System.out.println("2. Attemped");
+                    System.out.println("3. Solved");
+                    System.out.println("4. Need Revision");
+
+                    int statusChoice = sc.nextInt();
+                    sc.nextLine();
+
+                    Status status;
+                    switch(statusChoice){
+                        case 1:
+                            status = Status.NOT_STARTED;
+                            break;
+                        case 2:
+                            status = Status.ATTEMPTED;
+                            break;
+                        case 3:
+                            status = Status.SOLVED;
+                            break;
+                        case 4:
+                            status = Status.NEED_REVISION;
+                            break;
+                        default:
+                            status = Status.NOT_STARTED;
+                            System.out.println("Invalid Choice. Defaulting to Not Started");
+                    }
+                    System.out.println("Status Selected");
 
                     Problem pn = new Problem(id, title, platform, difficulty, topic, status);
 
@@ -96,15 +147,39 @@ public class Main {
                     tracker.searchProblem(keyword);
                     break;
                 case 4:
-                    System.out.println("Update A Problem");
+                    System.out.println("Update the Staus of the Problem");
 
                     System.out.println("Enter the ID number of the Problem:");
                     int sid = sc.nextInt();
                     sc.nextLine();
 
-                    System.out.println("Update Status of the Problem");
-                    String newStatus = sc.nextLine();
+                    System.out.println("Choose A Status for the Problem:");
+                    System.out.println("1. Not Started");
+                    System.out.println("2. Attemped");
+                    System.out.println("3. Solved");
+                    System.out.println("4. Need Revision");
 
+                    int statusChoiceUpdate = sc.nextInt();
+                    sc.nextLine();
+
+                    Status newStatus;
+                    switch(statusChoiceUpdate){
+                        case 1: 
+                            newStatus = Status.NOT_STARTED;
+                            break;
+                        case 2:
+                            newStatus = Status.ATTEMPTED;
+                            break;
+                        case 3:
+                            newStatus = Status.SOLVED;
+                            break;
+                        case 4:
+                            newStatus = Status.NEED_REVISION;
+                            break;
+                        default:
+                            newStatus = Status.NOT_STARTED;
+                            System.out.println("Invalid Choice. Defaulting to Not Started");
+                    }
                     tracker.updateProblem(sid,newStatus);
                     break;
                 case 5:

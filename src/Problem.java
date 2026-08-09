@@ -2,13 +2,13 @@ public class Problem{
     private int id;
     private String title;
     private String platform;
-    private String difficulty;
+    private Difficulty difficulty;
     private String topic;
-    private String status;
+    private Status status;
 
     public Problem(int id, String title, 
-        String platform, String difficulty, 
-        String topic, String status){
+        String platform, Difficulty difficulty, 
+        String topic, Status status){
 
             this.id = id;
             this.title = title;
@@ -17,7 +17,7 @@ public class Problem{
             this.topic = topic;
             this.status = status;
     }
-
+    // all getter methods from the user
     public int getId(){
         return id;
     }
@@ -30,7 +30,7 @@ public class Problem{
         return platform;
     } 
 
-    public String getDifficulty(){
+    public Difficulty getDifficulty(){
         return difficulty;
     }
 
@@ -38,10 +38,11 @@ public class Problem{
         return topic;
     }
 
-    public String getStatus(){
+    public Status getStatus(){
         return status;
     }
 
+    //all setter methods to set the data given by users
     public void setId(int id){
         this.id = id;
     }
@@ -54,7 +55,7 @@ public class Problem{
         this.platform = platform;
     }
 
-    public void setDifficulty(String difficulty){
+    public void setDifficulty(Difficulty difficulty){
         this.difficulty = difficulty;
     }
 
@@ -62,7 +63,18 @@ public class Problem{
         this.topic = topic;
     }
 
-    public void setStatus(String status){
+    public void setStatus(Status status){
         this.status = status;
+    }
+
+    public void display(){
+        System.out.println("------------------------------");
+        System.out.println("ID: " + id);
+        System.out.println("Title: " + title);
+        System.out.println("Platform: " + platform);
+        System.out.println("Difficulty: " + difficulty);
+        System.out.println("Topic: " + topic);
+        System.out.println("Status: " + status);
+        System.out.println("------------------------------");
     }
 }
