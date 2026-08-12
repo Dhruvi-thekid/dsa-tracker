@@ -1,1 +1,2 @@
-1|Bubble Sort|LeetCode|Easy|Sorring|Attempted
+1|Two Sum|LeetCode|Easy|Arrays|Solved|Brute-Force Approch.
+2|Factorial|LeetCode|Easy|Arrays|Solved|Iteration asa well as Reccursion Solved.

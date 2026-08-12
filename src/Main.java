@@ -4,6 +4,7 @@ import java.util.Scanner;
 public class Main {
     public static void main(String[] args) {
 
+
         DSATracker tracker = new DSATracker();
 
        /*  Problem p1 = new Problem(
@@ -126,7 +127,10 @@ public class Main {
                     }
                     System.out.println("Status Selected");
 
-                    Problem pn = new Problem(id, title, platform, difficulty, topic, status);
+                    System.out.println("Enter Notes for the Problem: ");
+                    String notes = sc.nextLine();
+
+                    Problem pn = new Problem(id, title, platform, difficulty, topic, status, notes);
 
                     tracker.addProblem(pn);
                     break;
@@ -147,40 +151,64 @@ public class Main {
                     tracker.searchProblem(keyword);
                     break;
                 case 4:
-                    System.out.println("Update the Staus of the Problem");
+                    System.out.println("Update the Problem");
 
-                    System.out.println("Enter the ID number of the Problem:");
-                    int sid = sc.nextInt();
+                    System.out.println("What do you want to update?");
+                    System.out.println("1. Status");
+                    System.out.println("2. Notes");
+                    System.out.println("3. Both[Status / Notes]");
+
+                    int update = sc.nextInt();
                     sc.nextLine();
 
-                    System.out.println("Choose A Status for the Problem:");
-                    System.out.println("1. Not Started");
-                    System.out.println("2. Attemped");
-                    System.out.println("3. Solved");
-                    System.out.println("4. Need Revision");
+                    switch(update){
+                        case 1:
+                            System.out.println("Updation of Status is selected");
 
-                    int statusChoiceUpdate = sc.nextInt();
-                    sc.nextLine();
+                            System.out.println("Enter the ID number of the Problem:");
+                            int sid = sc.nextInt();
+                            sc.nextLine();
 
-                    Status newStatus;
-                    switch(statusChoiceUpdate){
-                        case 1: 
-                            newStatus = Status.NOT_STARTED;
-                            break;
+                                Status newStatus = chooseStatus(sc);
+                                sc.nextLine();
+
+                                tracker.updateProblem(sid,newStatus);      
+                                break;
+                    
                         case 2:
-                            newStatus = Status.ATTEMPTED;
+                            System.out.println("Updation of Notes is selected");
+
+                            System.out.println("Enter the ID number of the Problem:");
+                            int nid = sc.nextInt();
+                            sc.nextLine();
+
+                            System.out.println("Enter your new updation for notes");
+                            String newNotes = sc.nextLine();
+
+                            tracker.updateNotes(nid, newNotes);
                             break;
+                        
                         case 3:
-                            newStatus = Status.SOLVED;
+                            System.out.println("Updation for Status as well as Notes is selected");
+
+                            System.out.println("Enter the ID number of the Problem:");
+                            int snid = sc.nextInt();
+                            sc.nextLine();
+
+                            Status new_Status = chooseStatus(sc);
+                            sc.nextLine();
+                            
+                            System.out.println("Enter your new updation for notes");
+                            String new_Notes = sc.nextLine();
+
+                            tracker.updateProblem(snid, new_Status, new_Notes);
+                            tracker.saveProblems();
+
                             break;
-                        case 4:
-                            newStatus = Status.NEED_REVISION;
-                            break;
+
                         default:
-                            newStatus = Status.NOT_STARTED;
-                            System.out.println("Invalid Choice. Defaulting to Not Started");
+                            System.out.println("Choose a correct option");
                     }
-                    tracker.updateProblem(sid,newStatus);
                     break;
                 case 5:
                     System.out.println("Delete A Problem");
@@ -188,7 +216,34 @@ public class Main {
                     System.out.println("Enter the ID of the Problem you want to Delete");
                     int did = sc.nextInt();
 
-                    tracker.deleteProblem(did);
+                    Problem problem = tracker.findProblemById(did);
+                    if(problem == null){
+                        System.out.println("No Problem Found");
+                        break;
+                    }
+
+                    problem.display();
+
+
+                    System.out.println("Are you sure you want to delete ID "+did+"?");
+                    System.out.println("Select:");
+                    
+                    System.out.println("1. Yes");
+                    System.out.println("2. No");
+                    int s = sc.nextInt();
+
+                    switch (s) {
+                        case 1:
+                            tracker.deleteProblem(did);
+                            break;
+                        case 2:
+                            System.out.println("Delection Suspended");
+                            break;
+                    
+                        default:
+                            System.out.println("Invalid Choice. Deletion Suspended");
+                            break;
+                    }
                     break;
 
                 case 6:
@@ -201,4 +256,29 @@ public class Main {
         }
         sc.close();
     }
+
+    public static Status chooseStatus(Scanner sc){
+
+        System.out.println("Choose A Status for the Problem:");
+        System.out.println("1. Not Started");
+        System.out.println("2. Attempted");
+        System.out.println("3. Solved");
+        System.out.println("4. Need Revision");
+
+        int choice = sc.nextInt();
+
+            switch (choice){
+                case 1:
+                    return Status.NOT_STARTED;
+                case 2:
+                    return Status.ATTEMPTED;
+                case 3:
+                    return Status.SOLVED;
+                case 4:
+                    return Status.NEED_REVISION;
+                default:
+                    System.out.println("Invalid Choice. Defaulting to Not Started");
+                    return Status.NOT_STARTED;
+            }
+        }
 }

@@ -3,6 +3,7 @@ import java.io.IOException;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.File;
 
 public class DSATracker {
     private final ArrayList<Problem> problems = new ArrayList<>();
@@ -32,7 +33,7 @@ public class DSATracker {
     //To serach a specific problem
     public void searchProblem(String keyword){
 
-        Boolean found = false;
+        boolean found = false;
 
         keyword = keyword.toLowerCase();
         for(Problem problem : problems){
@@ -52,10 +53,9 @@ public class DSATracker {
                     System.out.println("Topic:"+problem.getTopic());
                     System.out.println("Status:"+problem.getStatus());
                 }
-
-                if(found == false){
-                    System.out.println("No Problems found matching " +keyword);
-                }
+        }
+        if(found == false){
+            System.out.println("No Problems found matching " +keyword);
         }
     }
 
@@ -77,8 +77,27 @@ public class DSATracker {
 
             //System.out.println("New Status: " + problem.getStatus());
 
-            System.out.println("Updated Successfully");
+            System.out.println(" Status Updated Successfully");
         }
+    }
+
+    //@overloading-to fix "saveProblem() twice"
+    public void updateProblem(int id, Status newStatus, String newNotes){
+        Problem problem = findProblemById(id);
+
+        if(problem == null){
+            System.out.println("Problem not found");
+            return;
+        }
+        System.out.println("ID: "+problem.getId());
+        System.out.println("Old Status: "+problem.getStatus());
+        System.out.println("Note: "+problem.getNotes());
+
+        problem.setNotes(newNotes);
+        problem.setStatus(newStatus);
+        saveProblems();
+
+        System.out.println("Updated Status as well as Notes");
     }
 
     //to delete the problem
@@ -91,6 +110,10 @@ public class DSATracker {
             return;
         }
         problems.remove(problem);
+
+        System.out.println("Problems remaining after deletion:");
+        viewProblem();
+
         saveProblems();
 
         System.out.println("Deleted Successfully");
@@ -111,6 +134,7 @@ public class DSATracker {
     public void saveProblems(){
 
         try{
+
             FileWriter writer = new FileWriter("data.txt");
 
             for(Problem problem : problems){
@@ -120,7 +144,8 @@ public class DSATracker {
                 problem.getPlatform() +"|"+
                 problem.getDifficulty() +"|"+
                 problem.getTopic()+"|"+
-                problem.getStatus();
+                problem.getStatus()+"|"+
+                problem.getNotes();
 
                 writer.write(line);
                 writer.write('\n');
@@ -134,12 +159,19 @@ public class DSATracker {
 
     //to load the data from the file back to ArrayList to keep the data consistency
     public void loadProblems(){
+
+        File file= new File("data.txt");
+
+        if(!file.exists()){
+            System.out.println("No existing data found. Starting with an empty Tracker.");
+            return;
+        }
         try{
             BufferedReader reader = new BufferedReader(new FileReader("data.txt"));
 
             String line;
             while((line = reader.readLine()) != null){
-                String data[] = line.split("\\|");
+                String data[] = line.split("\\|",-1);
 
                 int id = Integer.parseInt(data[0]);
                 String title = data[1];
@@ -147,6 +179,7 @@ public class DSATracker {
                 Difficulty difficulty = Difficulty.valueOf(data[3].toUpperCase());
                 String topic = data[4];
                 Status status = Status.valueOf(data[5].trim().toUpperCase().replace(" ", "_"));
+                String notes = data[6];
 
                 Problem problem = new Problem(
                 id,
@@ -154,7 +187,8 @@ public class DSATracker {
                 platform,
                 difficulty,
                 topic,
-                status);
+                status,
+                notes);
 
                 problems.add(problem);
 
@@ -166,8 +200,26 @@ public class DSATracker {
         }
     }
 
+    //constructor that loads all the problems first from the file
     public DSATracker(){
         loadProblems();
+    }
+
+    //to update the notes feature
+    public void updateNotes(int id, String newNotes){
+        Problem problem = findProblemById(id);
+        if(problem == null){
+            System.out.println("Problem notfound");
+            return;
+        }
+        else{
+            System.out.println("ID:"+ problem.getId());
+            System.out.println("Note: "+problem.getNotes());
+
+            problem.setNotes(newNotes);
+            saveProblems();
+        }
+
     }
 
     public void menu(){

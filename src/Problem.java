@@ -5,10 +5,11 @@ public class Problem{
     private Difficulty difficulty;
     private String topic;
     private Status status;
+    private String notes;
 
     public Problem(int id, String title, 
         String platform, Difficulty difficulty, 
-        String topic, Status status){
+        String topic, Status status, String notes){
 
             this.id = id;
             this.title = title;
@@ -16,6 +17,7 @@ public class Problem{
             this.difficulty = difficulty;
             this.topic = topic;
             this.status = status;
+            this.notes = notes;
     }
     // all getter methods from the user
     public int getId(){
@@ -40,6 +42,10 @@ public class Problem{
 
     public Status getStatus(){
         return status;
+    }
+
+    public String getNotes(){
+        return notes;
     }
 
     //all setter methods to set the data given by users
@@ -67,6 +73,10 @@ public class Problem{
         this.status = status;
     }
 
+    public void setNotes(String notes){
+        this.notes = notes;
+    }
+
     public void display(){
         System.out.println("------------------------------");
         System.out.println("ID: " + id);
@@ -75,6 +85,7 @@ public class Problem{
         System.out.println("Difficulty: " + difficulty);
         System.out.println("Topic: " + topic);
         System.out.println("Status: " + status);
+        System.out.println("Note: "+notes);
         System.out.println("------------------------------");
     }
 }
