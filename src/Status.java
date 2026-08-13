@@ -1,6 +1,6 @@
 public enum Status {
     NOT_STARTED ("Not Started"),
-    ATTEMPTED(" Attempted"),
+    ATTEMPTED("Attempted"),
     SOLVED("Solved"),
     NEED_REVISION("Need Revision");
 

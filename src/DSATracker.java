@@ -4,9 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 
 public class DSATracker {
     private final ArrayList<Problem> problems = new ArrayList<>();
+    
 
     //to add a new problem in the ArrayList
     public void addProblem(Problem problem) {
@@ -220,6 +223,112 @@ public class DSATracker {
             saveProblems();
         }
 
+    }
+
+    //to estimate the overall DSA progress
+    public void viewProgress(){
+
+        System.out.println("========== DSA PROGRESS ==========");
+        int solved = 0;
+        int notstarted = 0;
+        int needrevision = 0;
+        int attempted = 0;
+
+        int total = problems.size();
+        System.out.println("Total Problems:  " + total);
+
+        System.out.println();
+
+        for(Problem problem : problems){
+            if(problem.getStatus() == Status.SOLVED){
+                solved++;
+            }
+            else if(problem.getStatus() == Status.ATTEMPTED){
+                attempted++;
+            }
+
+            else if(problem.getStatus() == Status.NEED_REVISION){
+                needrevision++;
+            }
+            else if(problem.getStatus() == Status.NOT_STARTED){
+                notstarted++;
+            }
+            else{
+                System.out.println("Error Loading Progress");
+            }
+        }
+        System.out.println("Solved Problems:  "+solved);
+        System.out.println("Attempted Problems:  "+ attempted);
+        System.out.println("Need Revision Problems:  "+ needrevision);
+        System.out.println("Not Started Problems:  "+ notstarted);
+
+        System.out.println();
+        System.out.println();
+
+
+        double percentage = 0;
+        if(total == 0){
+            percentage = 0;
+        }
+        else{
+            percentage = ((double)solved/total) * 100;
+            System.out.println("Progress:  "+ percentage+"%");
+        }
+
+        System.out.println("===================================");
+    }
+
+    //to estimate topic vise Progress
+    //used HasMap here
+    public void viewTopicProgress(){
+
+        System.out.println("========== TOPIC PROGRESS ==========");
+        HashMap<String, Integer> topicCount = new HashMap<>();
+
+        for(Problem problem : problems){
+            String topic = problem.getTopic();
+            if(topicCount.containsKey(topic)){
+                topicCount.put(topic, topicCount.get(topic)+1);
+            }
+            else{
+                topicCount.put(topic,1);
+            }
+        }
+
+        for(Map.Entry<String, Integer> entry : topicCount.entrySet()){
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
+
+        System.out.println("=====================================");
+    }
+
+
+    //to analize progess by cal. topic-wise solved problem
+    //used HashMap here as well
+    public void viewSolvedByTopic(){
+
+        System.out.println("========== SOLVED BY TOPIC ==========");
+        HashMap<String, Integer> solvedTopicCount = new HashMap<>();
+
+        
+
+        for(Problem problem : problems){
+            String topic = problem.getTopic();
+
+            if(problem.getStatus() == Status.SOLVED){
+                if(solvedTopicCount.containsKey(topic)){
+                    solvedTopicCount.put(topic, solvedTopicCount.get(topic)+1);
+                }
+                else{
+                    solvedTopicCount.put(topic,1);
+                }
+            }
+        }
+
+        for(Map.Entry<String, Integer> entry : solvedTopicCount.entrySet()){
+            System.out.println(entry.getKey()+" : "+entry.getValue());
+        }
+        System.out.println("=====================================");
     }
 
     public void menu(){

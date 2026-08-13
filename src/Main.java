@@ -39,7 +39,7 @@ public class Main {
         Scanner sc = new Scanner(System.in);
 
         int choice = 0;
-        while(choice != 6){
+        while(choice != 9){
 
             System.out.println("========== DSA TRACKER ==========");
             System.out.println();
@@ -48,7 +48,10 @@ public class Main {
             System.out.println("3. Search Problem");
             System.out.println("4. Update Problem");
             System.out.println("5. Delete Problem");
-            System.out.println("6. Exit");
+            System.out.println("6. View Progress");
+            System.out.println("7. View Topic Progress");
+            System.out.println("8. View Solved By Topic Problems");
+            System.out.println("9. Exit");
 
             System.out.println();
             System.out.println();
@@ -247,7 +250,22 @@ public class Main {
                     break;
 
                 case 6:
-                    System.out.println("Exiting DSA Tracker");
+                    System.out.println("Your DSA Progress:");
+                    tracker.viewProgress();
+                    break;
+
+                case 7:
+                    System.out.println("Your Topic-Wise Progress");
+                    tracker.viewTopicProgress();
+                    break;
+
+                case 8:
+                    System.out.println("Your Topic-Wise Solved Problems");
+                    tracker.viewSolvedByTopic();;
+                    break;
+
+                case 9:
+                    System.out.println("Exit DSA Tracker");
                     break;
 
                 default:
