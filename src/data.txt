@@ -1,3 +1,4 @@
-1|Two-Sum|LeetCode|Easy|Arrays|Solved|Brute-Force Applied.
-3|Bubble Sort|LeetCode|Medium|Sorting|Solved|Used Flag Variable for count
-4|Longest Word|LeetCode|Medium|String|Attempted|Not remembered quite well.
+1|Two Sum Problem|LeetCode|Easy|Arrays|Solved|Brute Force used.
+2|Bubble Sort|LeetCode|Easy|Sorting|Need Revision|Time Complexicity- O(n^2).
+3|Binary Search|NeetCode|Medium|Searching|Attempted|Iteration Only.
+4|Find Longest String|LeetCode|Medium|Strings|Solved|Just found the word count.

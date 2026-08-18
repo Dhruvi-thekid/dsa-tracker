@@ -1,40 +1,12 @@
 import java.util.Scanner;
 
-
+// user interaction
 public class Main {
     public static void main(String[] args) {
 
+        ProblemRepository repository = new ProblemRepository();
+        ProblemService service = new ProblemService(repository);
 
-        DSATracker tracker = new DSATracker();
-
-       /*  Problem p1 = new Problem(
-            1,
-            "Two Sum",
-            "LeetCode",
-            "Easy",
-            "Arrays",
-            "Solved"
-        );
-
-        Problem p2 = new Problem(
-            2,
-            "Binary Search",
-            "LeetCode",
-            "Easy",
-            "Searching",
-            "Solved"
-        );
-
-
-        tracker.addProblem(p1);   
-        tracker.addProblem(p2);
-
-        tracker.updateProblem(1, "Need Revision");
-        //tracker.updateProblem(12, "Solved");
-
-        tracker.deleteProblem(2);
-
-        tracker.viewProblem();*/
 
         Scanner sc = new Scanner(System.in);
 
@@ -135,13 +107,14 @@ public class Main {
 
                     Problem pn = new Problem(id, title, platform, difficulty, topic, status, notes);
 
-                    tracker.addProblem(pn);
+                    service.addProblem(pn);
                     break;
 
                     
                 case 2:
                     System.out.println("View All the Problmes");
-                    tracker.viewProblem();
+
+                    service.viewProblems();
 
                     break;
                 case 3:
@@ -151,81 +124,96 @@ public class Main {
                     System.out.println("Enter the problem you want to search:");
                     String keyword = sc.nextLine();
 
-                    tracker.searchProblem(keyword);
+                    service.serachProblems(keyword);
                     break;
+                
                 case 4:
-                    System.out.println("Update the Problem");
+                    System.out.println("Update Problem");
 
-                    System.out.println("What do you want to update?");
-                    System.out.println("1. Status");
-                    System.out.println("2. Notes");
-                    System.out.println("3. Both[Status / Notes]");
-
-                    int update = sc.nextInt();
+                    System.out.println("Enter Problem ID: ");
+                    int uid = sc.nextInt();
                     sc.nextLine();
 
-                    switch(update){
-                        case 1:
-                            System.out.println("Updation of Status is selected");
+                    Problem problem = repository.findProblemById(uid);
 
-                            System.out.println("Enter the ID number of the Problem:");
-                            int sid = sc.nextInt();
-                            sc.nextLine();
+                    if(problem == null){
+                        System.out.println("No ID found under that ID");
+                        break;
+                    }
 
-                                Status newStatus = chooseStatus(sc);
-                                sc.nextLine();
+                    problem.display();
 
-                                tracker.updateProblem(sid,newStatus);      
-                                break;
-                    
+                    System.out.println("\nWhat do you want to update?");
+                    System.out.println("1. Title");
+                    System.out.println("2. Platform");
+                    System.out.println("3. Difficulty");
+                    System.out.println("4. Topic");
+                    System.out.println("5. Status");
+                    System.out.println("6. Notes");
+                    System.out.println("7. Cancel");
+
+                    int updateChoice = sc.nextInt();
+                    sc.nextLine();
+
+                    switch(updateChoice){
+                         case 1:
+                            System.out.println("Enter new title:");
+                            String newTitle = sc.nextLine();
+                            problem.setTitle(newTitle);
+                            break;
+
                         case 2:
-                            System.out.println("Updation of Notes is selected");
+                            System.out.println("Enter new platform:");
+                            String newPlatform = sc.nextLine();
+                            problem.setPlatform(newPlatform);
+                            break;
 
-                            System.out.println("Enter the ID number of the Problem:");
-                            int nid = sc.nextInt();
-                            sc.nextLine();
-
-                            System.out.println("Enter your new updation for notes");
-                            String newNotes = sc.nextLine();
-
-                            tracker.updateNotes(nid, newNotes);
+                        case 3:
+                            System.out.println("Choose new difficulty:");
+                            Difficulty newDifficulty = chooseDifficulty(sc);
+                            problem.setDifficulty(newDifficulty);
                             break;
                         
-                        case 3:
-                            System.out.println("Updation for Status as well as Notes is selected");
+                        case 4:
+                            System.out.println("Enter new topic:");
+                            String newTopic = sc.nextLine();
+                            problem.setTopic(newTopic);
+                            break;
 
-                            System.out.println("Enter the ID number of the Problem:");
-                            int snid = sc.nextInt();
-                            sc.nextLine();
+                        case 5:
+                            Status updateStatus = chooseStatus(sc);
+                            problem.setStatus(updateStatus);
+                            break;
 
-                            Status new_Status = chooseStatus(sc);
-                            sc.nextLine();
-                            
-                            System.out.println("Enter your new updation for notes");
-                            String new_Notes = sc.nextLine();
+                        case 6:
+                            System.out.println("Enter new notes:");
+                            String updateNotes = sc.nextLine();
+                            problem.setNotes(updateNotes);
+                            break;
 
-                            tracker.updateProblem(snid, new_Status, new_Notes);
-                            tracker.saveProblems();
-
+                        case 7:
+                            System.out.println("Update cancelled.");
                             break;
 
                         default:
-                            System.out.println("Choose a correct option");
+                            System.out.println("Invalid choice.");
+                            break;
                     }
-                    break;
+                    repository.saveProblems();
+                    System.out.println("Updated Successfully");
+                    break; 
+
                 case 5:
                     System.out.println("Delete A Problem");
 
                     System.out.println("Enter the ID of the Problem you want to Delete");
                     int did = sc.nextInt();
 
-                    Problem problem = tracker.findProblemById(did);
-                    if(problem == null){
+                    Problem deleteProblem = repository.findProblemById(did);
+                    if(deleteProblem == null){
                         System.out.println("No Problem Found");
                         break;
                     }
-
-                    problem.display();
 
 
                     System.out.println("Are you sure you want to delete ID "+did+"?");
@@ -237,7 +225,7 @@ public class Main {
 
                     switch (s) {
                         case 1:
-                            tracker.deleteProblem(did);
+                            service.deleteProblem(did);
                             break;
                         case 2:
                             System.out.println("Delection Suspended");
@@ -251,29 +239,30 @@ public class Main {
 
                 case 6:
                     System.out.println("Your DSA Progress:");
-                    tracker.viewProgress();
+                    service.viewProgress();
                     break;
 
                 case 7:
                     System.out.println("Your Topic-Wise Progress");
-                    tracker.viewTopicProgress();
+                    service.viewTopicProgress();
                     break;
 
                 case 8:
                     System.out.println("Your Topic-Wise Solved Problems");
-                    tracker.viewSolvedByTopic();;
+                    service.viewSolvedByTopic();
                     break;
 
                 case 9:
                     System.out.println("Exit DSA Tracker");
                     break;
-
                 default:
                     System.out.println("Invalid Choice. Please try again");
+
             }
         }
         sc.close();
     }
+
 
     public static Status chooseStatus(Scanner sc){
 
@@ -298,5 +287,29 @@ public class Main {
                     System.out.println("Invalid Choice. Defaulting to Not Started");
                     return Status.NOT_STARTED;
             }
+    }
+
+    public static Difficulty chooseDifficulty(Scanner sc){
+        System.out.println("Choose Difficulty:");
+        System.out.println("1. Easy");
+        System.out.println("2. Medium");
+        System.out.println("3. Hard");
+
+         int choice = sc.nextInt();
+
+    switch (choice){
+        case 1:
+            return Difficulty.EASY;
+
+        case 2:
+            return Difficulty.MEDIUM;
+
+        case 3:
+            return Difficulty.HARD;
+
+        default:
+            System.out.println("Invalid choice. Defaulting to Easy");
+            return Difficulty.EASY;
         }
+    }
 }
